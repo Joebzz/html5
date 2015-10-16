@@ -1,0 +1,140 @@
+<html>
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+</head>
+    <body onresize="setSize()">
+        <canvas id="canvas1" style="position: absolute; left: 0; top: 0; z-index: 0;"></canvas>
+        <canvas id="canvas2" style="position: absolute; left: 0; top: 0; z-index: 1;"></canvas>
+		
+<script type="text/javascript">
+	var curImage = new Image();
+	
+	var pics =	[
+		"alan.PNG",
+		"archer.PNG",
+		"bill.PNG",
+		"billyK.PNG",
+		"corey.PNG",
+		"dad.PNG",
+		"daly.PNG",
+		"danny.PNG",
+		"dara.PNG",
+		"fahy.PNG",
+		"fahy2.PNG",
+		"finn.PNG",
+		"fionn.PNG",
+		"geoff.PNG",
+		"gillane.PNG",
+		"jesse.PNG",
+		"joebee.png",
+		"joebee_smile.PNG",
+		"john.PNG",
+		"josh.PNG",
+		"lee.PNG",
+		"lewy.PNG",
+		"louis.PNG",
+		"louise.PNG",
+		"meiers.PNG",
+		"mom.PNG",
+		"paul.PNG",
+		"sad_fionn.PNG",
+		"sean.PNG",
+		"walsh.PNG",
+		"warde.PNG"
+	];
+	
+	var max, index;
+	var leftButtonDown = false;
+	
+	function init(){
+		var canvas1 = document.getElementById('canvas1');
+		var ctx1 = canvas1.getContext('2d');
+		
+		var canvas2 = document.getElementById('canvas2');
+		var ctx2 = canvas2.getContext('2d');
+		
+		//canvas2.addEventListener("mousedown", doMouseDown, false);
+		canvas2.addEventListener('mousemove',doMouseMove, false);
+		setSize();
+		
+		max = pics.length;		
+		index = Math.round(max/2);
+	}
+	
+	function setSize(){
+		var canvas1 = document.getElementById('canvas1');
+		var ctx1 = canvas1.getContext('2d');
+		
+		var canvas2 = document.getElementById('canvas2');
+		var ctx2 = canvas2.getContext('2d');
+		ctx1.canvas.width  = window.innerWidth;
+		ctx1.canvas.height = window.innerHeight;
+
+		ctx2.canvas.width  = window.innerWidth;
+		ctx2.canvas.height = window.innerHeight;
+	}
+	$(document).mousedown(function(e){
+        if(e.which === 1){
+			leftButtonDown = true;
+			var canvas1 = document.getElementById('canvas1');
+			var ctx1 = canvas1.getContext('2d');
+			
+			canvas_x = event.pageX;
+			canvas_y = event.pageY;		
+			
+			ctx1.drawImage(curImage,canvas_x-100,canvas_y-100, 200, 200);
+		}
+    });
+    $(document).mouseup(function(e){
+        // Left mouse button was released, clear flag
+        if(e.which === 1) leftButtonDown = false;
+    });
+	
+	function doMouseMove(event) {
+
+		var canvas2 = document.getElementById('canvas2');
+		var ctx2 = canvas2.getContext('2d');
+		
+		canvas_x = event.pageX;
+		canvas_y = event.pageY;		
+		
+        ctx2.clearRect(0, 0, canvas2.width, canvas2.height);
+		ctx2.drawImage(curImage,canvas_x-100,canvas_y-100, 200, 200);
+		
+		ctx2.Restore;
+		
+		if(leftButtonDown)
+		{
+			var canvas1 = document.getElementById('canvas1');
+			var ctx1 = canvas1.getContext('2d');
+			
+			canvas_x = event.pageX;
+			canvas_y = event.pageY;		
+				
+			ctx1.drawImage(curImage,canvas_x-100,canvas_y-100, 200, 200);
+		}
+	}
+	
+	// Register Keyboard Events
+	window.onkeyup = function(e) {
+	   var key = e.keyCode ? e.keyCode : e.which;
+	   if (key == 38) {
+			if(index == max)
+				index = 0;
+			else
+				index++;
+				
+			curImage.src = pics[index];
+	   }else if (key == 40) {
+			if(index == 0)
+				index = max;
+			else
+				index--;
+				
+			curImage.src = pics[index];
+	   }
+	}
+	init();
+</script>
+            
+</body></html>
